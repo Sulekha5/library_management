@@ -1,0 +1,371 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/* ✅ White background */
+body {
+    margin-bottom: 60px;
+    background-color: #f0f2f5 !important;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus,
+.form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #5510a1;
+}
+
+table {
+    background-color: white;
+    color: black;
+}
+
+input, select {
+    color: black;
+}
+
+/* ✅ Headings - dark for white background */
+h1, h2, h3, h4, h5, h6 {
+    color: #1e1e2f !important;
+}
+
+label {
+    color: #333 !important;
+    font-weight: 500;
+}
+
+.form-control {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    color: black;
+    border: 1px solid #ccc;
+}
+
+    .form-control:focus {
+        box-shadow: 0 0 8px rgba(85,16,161,0.4);
+        border-color: #5510a1;
+    }
+
+/* ✅ Buttons */
+.btn {
+    background-color: #5510a1 !important;
+    border: none;
+    color: white !important;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: rgba(255,255,255,0.3);
+        transform: skewX(-25deg);
+    }
+
+    .btn:hover::before {
+        left: 125%;
+        transition: 0.75s;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+    }
+
+    .btn:active {
+        transform: scale(0.95);
+        box-shadow: 0 0 10px rgba(0,0,0,0.2) inset;
+    }
+
+.custom-btn {
+    background-color: #5510a1 !important;
+    color: white !important;
+    font-size: 15px;
+    padding: 9px 22px;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+    .custom-btn:hover {
+        transform: scale(1.05);
+        background-color: #6a1bc2 !important;
+    }
+
+    .custom-btn:active {
+        transform: scale(0.95);
+    }
+
+/* ✅ Cards */
+.card {
+    border-radius: 12px;
+    transition: 0.3s;
+    border: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(85,16,161,0.15);
+    }
+
+.bi-book-half {
+    transition: 0.3s;
+}
+
+    .bi-book-half:hover {
+        transform: scale(1.2);
+    }
+
+/* ✅ TABLE */
+.table {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+    .table thead {
+        background-color: #5510a1;
+        color: white;
+    }
+
+    .table th {
+        padding: 12px;
+        text-align: center;
+        color: white !important;
+    }
+
+    .table td {
+        padding: 10px;
+        text-align: center;
+        color: #222 !important;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    .table tbody tr:hover {
+        background-color: #ede6ff;
+        transition: 0.3s;
+    }
+
+    .table thead th:first-child {
+        border-top-left-radius: 10px;
+    }
+
+    .table thead th:last-child {
+        border-top-right-radius: 10px;
+    }
+
+    .table .btn {
+        padding: 4px 10px;
+        font-size: 13px;
+    }
+
+/* ✅ Navbar */
+.navbar {
+    background: linear-gradient(90deg, #3b0090, #5510a1);
+    padding: 12px 20px;
+    box-shadow: 0 2px 12px rgba(85,16,161,0.3);
+}
+
+.navbar-brand {
+    color: #fff !important;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.navbar-nav .nav-link {
+    color: #e0d0ff !important;
+    margin-right: 10px;
+    transition: 0.3s;
+    border-radius: 6px;
+    padding: 6px 12px !important;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: #fff !important;
+        background-color: rgba(255,255,255,0.15);
+        transform: scale(1.05);
+    }
+
+    .navbar-nav .nav-link.active {
+        color: #fff !important;
+        background-color: rgba(255,255,255,0.2);
+        border-bottom: 2px solid #c084fc;
+    }
+
+/* ✅ Logout button in navbar */
+.navbar .btn-logout {
+    background-color: #dc2626 !important;
+    color: white !important;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+    .navbar .btn-logout:hover {
+        background-color: #b91c1c !important;
+        transform: scale(1.05);
+    }
+
+/* ✅ Footer */
+.footer {
+    color: #888 !important;
+    border-color: #ddd !important;
+}
+
+/* ✅ Stat cards on white bg */
+.stat-card {
+    background: linear-gradient(135deg, #5510a1, #7a1fd1);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 16px rgba(85,16,161,0.25);
+    transition: 0.3s;
+}
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(85,16,161,0.35);
+    }
+
+    .stat-card h6 {
+        color: #e0d0ff !important;
+        font-size: 14px;
+    }
+
+    .stat-card h2 {
+        color: white !important;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .stat-card i {
+        color: #c084fc;
+    }
+
+    .stat-card.highlight {
+        background: linear-gradient(135deg, #7c3aed, #a855f7);
+    }
+
+        .stat-card.highlight i {
+            color: #fde68a;
+        }
+
+/* ✅ Page header style */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #ede6ff;
+}
+
+.page-header-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e1e2f !important;
+}
+
+/* ✅ Section card */
+.section-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    margin-bottom: 24px;
+    border: 1px solid #ede6ff;
+}
+
+.section-card-title {
+    color: #5510a1 !important;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+/* ✅ Fix: page-header title dark visible */
+.page-header-title {
+    color: #1e1e2f !important;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* ✅ Fix: Home/Index heading visible */
+.home-title {
+    color: #1e1e2f !important;
+}
+
+/* ✅ Fix: table first row - header row visible */
+.table thead th {
+    color: white !important;
+    background-color: #5510a1 !important;
+}
+
+/* ✅ Fix: all table td text black */
+.table td {
+    color: #1e1e2f !important;
+}
+
+/* ✅ Fix: Student History heading */
+.student-history-title {
+    color: #1e1e2f !important;
+}
+
+/* ✅ Admin dropdown hover */
+.dropdown-menu .dropdown-item:hover {
+    background: rgba(255,255,255,0.15) !important;
+    color: white !important;
+}
+
+/* ✅ Back button - proper position fix */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #ede6ff;
+}
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+}
