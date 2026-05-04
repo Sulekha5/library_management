@@ -1,0 +1,92 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "My Book History";
+}
+
+<div class="mb-4">
+    <i class="bi bi-journal-bookmark-fill me-2"
+       style="color:#5510a1; font-size:28px;"></i>
+    <span style="color:#1e1e2f; font-size:24px; font-weight:700;">
+        My Book History
+    </span>
+</div>
+
+<div class="section-card">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Issue Date</th>
+                    <th>Return Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        // ✅ Fix: .ToString() use karo dynamic type ke saath
+                        string statusStr = item.Status != null
+                                           ? item.Status.ToString()
+                                           : "Pending";
+
+                        string issueStr = item.IssueDate != null
+                            ? ((DateTime)item.IssueDate).ToString("dd MMM yyyy")
+                            : "-";
+
+                        string returnStr = item.ReturnDate != null
+                            ? ((DateTime)item.ReturnDate).ToString("dd MMM yyyy")
+                            : "-";
+
+                        <tr>
+                            <td>@item.Book</td>
+                            <td>@issueStr</td>
+                            <td>@returnStr</td>
+                            <td>
+                                @if (statusStr == "Approved")
+                                {
+                                    <span style="background:#dcfce7; color:#16a34a;
+                                        padding:4px 12px; border-radius:20px;
+                                        border:1px solid #16a34a; font-size:13px;">
+                                        ✅ Approved
+                                    </span>
+                                }
+                                else if (statusStr == "Denied")
+                                {
+                                    <span style="background:#fee2e2; color:#dc2626;
+                                        padding:4px 12px; border-radius:20px;
+                                        border:1px solid #dc2626; font-size:13px;">
+                                        ❌ Denied
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="background:#fef9c3; color:#b45309;
+                                        padding:4px 12px; border-radius:20px;
+                                        border:1px solid #d97706; font-size:13px;">
+                                        ⏳ Pending
+                                    </span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" style="text-align:center;
+                            padding:30px; color:#888;">
+                            <i class="bi bi-inbox"
+                               style="font-size:30px; display:block;
+                            margin-bottom:8px;"></i>
+                            No records found
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

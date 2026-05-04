@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Verify OTP";
+}
+
+<div class="container mt-5">
+    <div class="card p-4 shadow" style="max-width:460px; margin:auto; background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius:16px;">
+
+        <div class="text-center mb-4">
+            <i class="bi bi-shield-check" style="font-size:50px; color:#b454f0;"></i>
+            <h2 class="mt-2" style="color:white !important;">Verify OTP</h2>
+            <p style="color:#ccc; font-size:14px;">Enter the OTP sent to your email</p>
+        </div>
+
+        <form method="post" action="/Auth/VerifyOtp">
+            <div class="mb-3">
+                <label style="color:#ddd !important;">OTP Code</label>
+                <input type="text" name="otp" placeholder="Enter OTP" class="form-control"
+                       style="letter-spacing:8px; font-size:20px; text-align:center;" maxlength="6" />
+            </div>
+
+            <div class="d-grid mt-3">
+                <button class="btn custom-btn">Verify OTP</button>
+            </div>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert mt-3" style="background:#ff4d4d22; border:1px solid #ff4d4d; color:#ff4d4d; border-radius:8px; padding:10px;">
+                    ⚠️ @ViewBag.Error
+                </div>
+            }
+        </form>
+    </div>
+</div>

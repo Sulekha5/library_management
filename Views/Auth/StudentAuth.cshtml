@@ -1,0 +1,166 @@
+﻿@{
+    ViewData["Title"] = "Student Login";
+}
+
+<div class="container mt-5">
+    <div class="card p-4 shadow" style="max-width:460px; margin:auto;
+        background:linear-gradient(135deg,#1e3c72,#2a5298); border-radius:16px;">
+
+        <div class="text-center mb-4">
+            <i class="bi bi-mortarboard-fill" style="font-size:50px; color:#b454f0;"></i>
+            <h2 id="formTitle" class="mt-2" style="color:white !important;">Student Login</h2>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm" method="post" action="/Auth/Login">
+            <div class="mb-3">
+                <label style="color:#ddd !important;">Email</label>
+                <input type="email" name="email" placeholder="Enter email"
+                       class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label style="color:#ddd !important;">Password</label>
+                <div class="input-group">
+                    <input type="password" name="password" id="loginPassword"
+                           placeholder="Enter password" class="form-control" required
+                           style="border-right:none;" />
+                    <button type="button" class="input-group-text"
+                            onclick="togglePassword('loginPassword', 'loginEye')"
+                            style="background:#f8f9fa; border-left:none; cursor:pointer; border-radius:0 8px 8px 0;">
+                        <i class="bi bi-eye" id="loginEye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="d-grid">
+                <button class="btn custom-btn">Sign In</button>
+            </div>
+        </form>
+
+        <!-- SIGNUP FORM -->
+        <form id="signupForm" method="post" action="/Auth/Register" style="display:none;">
+            <div class="mb-3">
+                <label style="color:#ddd !important;">Full Name</label>
+                <input type="text" name="name" placeholder="Enter your name"
+                       class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label style="color:#ddd !important;">Email</label>
+                <input type="email" name="email" placeholder="Enter email"
+                       class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label style="color:#ddd !important;">Password</label>
+                <div class="input-group">
+                    <input type="password" name="password" id="signupPassword"
+                           placeholder="Create password" class="form-control" required
+                           style="border-right:none;" />
+                    <button type="button" class="input-group-text"
+                            onclick="togglePassword('signupPassword', 'signupEye')"
+                            style="background:#f8f9fa; border-left:none; cursor:pointer; border-radius:0 8px 8px 0;">
+                        <i class="bi bi-eye" id="signupEye"></i>
+                    </button>
+                </div>
+                <!-- Password strength bar -->
+                <div id="strengthBar" style="margin-top:8px; display:none;">
+                    <div style="height:4px; border-radius:4px; background:#e5e7eb; overflow:hidden;">
+                        <div id="strengthFill"
+                             style="height:100%; width:0%; transition:0.3s; border-radius:4px;"></div>
+                    </div>
+                    <small id="strengthText" style="font-size:12px; color:#ddd;"></small>
+                </div>
+            </div>
+            <div class="d-grid">
+                <button class="btn custom-btn">Sign Up</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="/Auth/ForgotPassword" style="color:#b454f0; font-size:14px;">
+                Forgot Password?
+            </a>
+        </div>
+
+        <div class="text-center mt-2" onclick="toggleForm()"
+             style="cursor:pointer; color:#cfcfff; font-size:14px;"
+             onmouseover="this.style.color='#b454f0'"
+             onmouseout="this.style.color='#cfcfff'">
+            <span id="toggleText">New user? Sign Up →</span>
+        </div>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert mt-3"
+                 style="background:#ff4d4d22; border:1px solid #ff4d4d;
+                color:#ff4d4d; border-radius:8px; padding:10px; text-align:center;">
+                ⚠️ @ViewBag.Error
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon  = document.getElementById(iconId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.className = "bi bi-eye-slash";
+        } else {
+            input.type = "password";
+            icon.className = "bi bi-eye";
+        }
+    }
+
+    function toggleForm() {
+        const login    = document.getElementById("loginForm");
+        const signup   = document.getElementById("signupForm");
+        const title    = document.getElementById("formTitle");
+        const toggle   = document.getElementById("toggleText");
+        const strength = document.getElementById("strengthBar");
+
+        if (login.style.display === "none") {
+            login.style.display  = "block";
+            signup.style.display = "none";
+            title.innerText  = "Student Login";
+            toggle.innerText = "New user? Sign Up →";
+            strength.style.display = "none";
+        } else {
+            login.style.display  = "none";
+            signup.style.display = "block";
+            title.innerText  = "Create Account";
+            toggle.innerText = "Already registered? Sign In →";
+            strength.style.display = "block";
+        }
+    }
+
+    // Password strength checker
+    document.getElementById("signupPassword").addEventListener("input", function () {
+        const val  = this.value;
+        const fill = document.getElementById("strengthFill");
+        const text = document.getElementById("strengthText");
+
+        let score = 0;
+        if (val.length >= 8)                    score++;
+        if (/[A-Z]/.test(val))                  score++;
+        if (/[0-9]/.test(val))                  score++;
+        if (/[^A-Za-z0-9]/.test(val))          score++;
+
+        const levels = [
+            { width: "25%", color: "#ef4444", label: "Weak" },
+            { width: "50%", color: "#f97316", label: "Fair" },
+            { width: "75%", color: "#eab308", label: "Good" },
+            { width: "100%",color: "#22c55e", label: "Strong ✅" }
+        ];
+
+        const level = levels[score - 1] || levels[0];
+        if (val.length === 0) {
+            fill.style.width = "0%";
+            text.innerText   = "";
+        } else {
+            fill.style.width      = level.width;
+            fill.style.background = level.color;
+            text.innerText        = level.label;
+            text.style.color      = level.color;
+        }
+    });
+</script>

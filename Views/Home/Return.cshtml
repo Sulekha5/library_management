@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Return Book";
+}
+
+<!-- Page header FLEX - title left, back right -->
+<div class="page-header">
+    <div>
+        <i class="bi bi-arrow-return-left me-2" style="color:#5510a1; font-size:26px;"></i>
+        <span class="page-header-title">Return Book</span>
+    </div>
+    <a href="/Home/Manager" class="btn custom-btn" style="font-size:14px; padding:8px 18px;">
+        <i class="bi bi-arrow-left me-1"></i>Back
+    </a>
+</div>
+
+<div class="section-card" style="max-width:600px;">
+    <div class="mb-3">
+        <label>Student Name</label>
+        <input type="text" id="studentName" class="form-control" placeholder="Enter student name" />
+    </div>
+    <div class="mb-3">
+        <label>Book Name</label>
+        <input type="text" id="bookName" class="form-control" placeholder="Enter book name" />
+    </div>
+    <div class="mb-3">
+        <label>Return Date</label>
+        <input type="date" id="returnDate" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Fine Amount</label>
+        <input type="text" id="fine" class="form-control" readonly
+               placeholder="Fine will appear here"
+               style="background:#f3e8ff; color:#5510a1; font-weight:bold;" />
+    </div>
+    <div class="d-flex gap-2 mt-2">
+        <button class="btn custom-btn flex-grow-1" id="checkFine" style="font-size:14px;">
+            <i class="bi bi-calculator me-1"></i>Check Fine
+        </button>
+        <button class="btn custom-btn flex-grow-1" id="returnBtn" style="font-size:14px;">
+            <i class="bi bi-check-circle me-1"></i>Return Book
+        </button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/js/return.js"></script>

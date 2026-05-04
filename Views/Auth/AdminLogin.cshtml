@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Admin Login";
+}
+
+<div class="container mt-5">
+    <div class="card p-4 shadow" style="max-width:460px; margin:auto; background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius:16px;">
+        
+        <div class="text-center mb-4">
+            <i class="bi bi-shield-lock-fill" style="font-size:50px; color:#b454f0;"></i>
+            <h2 class="mt-2" style="color:white !important;">Admin Login</h2>
+        </div>
+
+        <form method="post">
+            <div class="mb-3">
+                <label style="color:#ddd !important;">User Id</label>
+                <input type="text" name="userId" class="form-control" placeholder="Enter User ID" />
+            </div>
+
+            <div class="mb-3">
+                <label style="color:#ddd !important;">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Enter Password" />
+            </div>
+
+            <div class="d-grid mt-3">
+                <button class="btn custom-btn">Login</button>
+            </div>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert mt-3" style="background:#ff4d4d22; border:1px solid #ff4d4d; color:#ff4d4d; border-radius:8px; padding:10px;">
+                    ⚠️ @ViewBag.Error
+                </div>
+            }
+        </form>
+    </div>
+</div>

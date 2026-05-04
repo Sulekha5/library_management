@@ -1,0 +1,205 @@
+﻿@{
+    ViewData["Title"] = "Issue Book";
+    var sessionName = Context.Session.GetString("StudentName") ?? "";
+    var sessionEmail = Context.Session.GetString("StudentEmail") ?? "";
+    var isStudent = !string.IsNullOrEmpty(sessionName);
+}
+
+<div class="page-header">
+    <div>
+        <i class="bi bi-journal-plus me-2" style="color:#5510a1; font-size:26px;"></i>
+        <span class="page-header-title">Issue Book</span>
+    </div>
+</div>
+
+<div class="section-card" style="max-width:600px;">
+
+    <div class="mb-3">
+        <label>Student Name</label>
+        @if (isStudent)
+        {
+            <input type="text" id="studentName" class="form-control"
+                   value="@sessionName" readonly
+                   style="background:#f3e8ff; color:#5510a1;
+            font-weight:600; cursor:not-allowed;" />
+        }
+        else
+        {
+            <input type="text" id="studentName" class="form-control"
+                   placeholder="Enter student name" />
+        }
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label>
+        @if (isStudent)
+        {
+            <input type="email" id="studentEmail" class="form-control"
+                   value="@sessionEmail" readonly
+                   style="background:#f3e8ff; color:#5510a1;
+            font-weight:600; cursor:not-allowed;" />
+        }
+        else
+        {
+            <input type="email" id="studentEmail" class="form-control"
+                   placeholder="Enter student email" />
+        }
+    </div>
+
+    <!-- ✅ Book Search with Dropdown -->
+    <div class="mb-3" style="position:relative;">
+        <label>Book Name</label>
+        <div class="input-group">
+            <span class="input-group-text" style="background:#5510a1; border:none;">
+                <i class="bi bi-search" style="color:white;"></i>
+            </span>
+            <input type="text" id="bookSearch" class="form-control"
+                   placeholder="Type to search book..."
+                   autocomplete="off"
+                   style="border-left:none;" />
+        </div>
+        <!-- Hidden actual value -->
+        <input type="hidden" id="bookName" />
+
+        <!-- Dropdown results -->
+        <div id="bookDropdown" style="
+            display:none; position:absolute; top:100%; left:0; right:0;
+            background:white; border:1px solid #e5e7eb; border-radius:10px;
+            box-shadow:0 8px 24px rgba(0,0,0,0.12); z-index:1000;
+            max-height:220px; overflow-y:auto; margin-top:4px;">
+        </div>
+    </div>
+
+    <!-- Selected book info card -->
+    <div id="selectedBookCard" style="display:none;" class="mb-3">
+        <div style="background:#f3e8ff; border:1px solid #c084fc;
+            border-radius:10px; padding:12px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <span style="color:#5510a1; font-weight:600; font-size:15px;">
+                        <i class="bi bi-book me-2"></i>
+                        <span id="selectedBookName"></span>
+                    </span>
+                    <br />
+                    <small style="color:#7c3aed;">
+                        Author: <span id="selectedBookAuthor"></span> &nbsp;|&nbsp;
+                        Available: <span id="selectedBookQty"></span>
+                    </small>
+                </div>
+                <button onclick="clearBookSelection()"
+                        style="background:none; border:none; color:#dc2626;
+                    font-size:20px; cursor:pointer;">
+                    ×
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Return Date</label>
+        <input type="date" id="returnDate" class="form-control" />
+    </div>
+
+    <div class="d-grid mt-2">
+        <button id="issueBtn" class="btn custom-btn" style="font-size:15px; padding:12px;">
+            <i class="bi bi-check-circle me-2"></i>Issue Book
+        </button>
+    </div>
+</div>
+
+<script src="~/js/issue.js"></script>
+<script>
+    let allBooks = [];
+    let selectedBook = null;
+
+    // Books load karo
+    fetch('/Home/GetRecords')
+        .then(r => r.json())
+        .then(data => { allBooks = data.books || []; });
+
+    const searchInput = document.getElementById("bookSearch");
+    const dropdown    = document.getElementById("bookDropdown");
+
+    searchInput.addEventListener("input", function () {
+        const q = this.value.toLowerCase().trim();
+        dropdown.innerHTML = "";
+
+        if (!q) { dropdown.style.display = "none"; return; }
+
+        const filtered = allBooks.filter(b =>
+            (b.name ?? b.Name ?? "").toLowerCase().includes(q) ||
+            String(b.bookId ?? b.BookId ?? "").includes(q)
+        );
+
+        if (filtered.length === 0) {
+            dropdown.innerHTML = `<div style="padding:14px; color:#888; text-align:center;">
+                No books found</div>`;
+            dropdown.style.display = "block";
+            return;
+        }
+
+        filtered.forEach(b => {
+            const name  = b.name  ?? b.Name  ?? "";
+            const qty   = b.quantity ?? b.Quantity ?? 0;
+            const author= b.author ?? b.Author ?? "";
+            const id    = b.bookId ?? b.BookId;
+
+            const item = document.createElement("div");
+            item.style.cssText = `padding:12px 16px; cursor:pointer; border-bottom:1px solid #f3f4f6;
+                display:flex; justify-content:space-between; align-items:center;`;
+            item.innerHTML = `
+                <div>
+                    <div style="font-weight:600; color:#1e1e2f; font-size:14px;">${name}</div>
+                    <div style="font-size:12px; color:#888;">by ${author}</div>
+                </div>
+                <span style="background:${qty > 0 ? '#dcfce7' : '#fee2e2'};
+                             color:${qty > 0 ? '#16a34a' : '#dc2626'};
+                             padding:3px 10px; border-radius:20px; font-size:12px; font-weight:600;">
+                    ${qty > 0 ? qty + ' left' : 'Out of stock'}
+                </span>`;
+
+            item.addEventListener("mouseenter", () =>
+                item.style.background = "#f5f3ff");
+            item.addEventListener("mouseleave", () =>
+                item.style.background = "white");
+
+            item.addEventListener("click", () => {
+                if (qty <= 0) {
+                    showToast("This book is out of stock!", "error");
+                    return;
+                }
+                selectBook({ name, author, qty, id });
+            });
+
+            dropdown.appendChild(item);
+        });
+
+        dropdown.style.display = "block";
+    });
+
+    function selectBook(book) {
+        selectedBook = book;
+        searchInput.value = book.name;
+        document.getElementById("bookName").value = book.name;
+        dropdown.style.display = "none";
+
+        // Info card dikhao
+        document.getElementById("selectedBookName").innerText   = book.name;
+        document.getElementById("selectedBookAuthor").innerText = book.author;
+        document.getElementById("selectedBookQty").innerText    = book.qty;
+        document.getElementById("selectedBookCard").style.display = "block";
+    }
+
+    function clearBookSelection() {
+        selectedBook = null;
+        searchInput.value = "";
+        document.getElementById("bookName").value = "";
+        document.getElementById("selectedBookCard").style.display = "none";
+    }
+
+    // Dropdown close on outside click
+    document.addEventListener("click", e => {
+        if (!e.target.closest("#bookSearch") && !e.target.closest("#bookDropdown"))
+            dropdown.style.display = "none";
+    });
+</script>
